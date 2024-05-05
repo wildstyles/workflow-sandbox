@@ -1,6 +1,7 @@
 {
   "name": "workflow-sandbox",
   "version": "0.1.0",
+  "homepage": "https://wildstyles.github.io/workflow-sandbox",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
