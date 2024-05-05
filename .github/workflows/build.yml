@@ -1,10 +1,11 @@
 name: Build Workflow
 
 on:
-  workflow_run:
-    workflows: [Check Workflow]
-    # branches: [master]
-    types: [completed]
+  workflow_dispatch
+  # workflow_run:
+  #   workflows: [Check Workflow]
+  #   # branches: [master]
+  #   types: [completed]
 
 jobs:
   run-deploy:
@@ -12,5 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Checkout
-        run: echo "Hello000000000"
+      - name: Download Artifact From Check Workflow
+        uses: actions/download-artifact@v4
+        with:
+          name: check-workflow-artifact-${{ github.event.pull_request.number }}
