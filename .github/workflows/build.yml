@@ -43,5 +43,11 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Display structure of downloaded files
-        run: ls -R
+      - name: Build
+        run: yarn build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
+          branch: master
