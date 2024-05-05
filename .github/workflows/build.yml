@@ -1,24 +1,47 @@
 name: Build Workflow
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows: [Check Workflow]
     branches: [master]
     types: [completed]
 
 jobs:
-  run-deploy:
-    name: Run Deploy
+  run-build:
+    name: Run Build
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Download Artifact From Check Workflow
-        uses: actions/download-artifact@v4
+      # - name: Download Artifact From Check Workflow
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: check-workflow-artifact
+      #     run-id: ${{ github.event.workflow_run.id }}
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          name: check-workflow-artifact
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version-file: .nvmrc
+
+      - name: Get Yarn Cache Directory Path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Restore Dependencies Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            node_modules
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-
+
+      - name: Install Dependencies
+        run: yarn
 
       - name: Display structure of downloaded files
         run: ls -R
