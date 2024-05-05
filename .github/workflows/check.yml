@@ -1,13 +1,12 @@
 name: Check Workflow
 
 on:
-  workflow_dispatch
-  # push:
-  #   branches:
-  #     - master
-  # pull_request:
-  #   branches:
-  #     - master
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   run-linters:
@@ -30,10 +29,11 @@ jobs:
         uses: actions/cache/restore@v3
         id: restore-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: |
+            node_modules
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-
+          restore-keys: ${{ runner.os }}-
 
       - name: Install Dependencies
         run: yarn
@@ -42,7 +42,9 @@ jobs:
         uses: actions/cache/save@v3
         if: steps.restore-cache.outputs.cache-hit != 'true'
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: |
+            node_modules
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
 
       - name: Lint
