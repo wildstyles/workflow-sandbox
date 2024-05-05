@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const unused = '';
+  // const unused = '';
 
   return (
     <div className='App'>
