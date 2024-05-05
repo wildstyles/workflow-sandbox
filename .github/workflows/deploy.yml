@@ -1,0 +1,14 @@
+name: Deploy Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  run-deploy:
+    name: Run Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        run: echo "Hello"
