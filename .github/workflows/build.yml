@@ -59,7 +59,7 @@ jobs:
           TARGET: /home/ubuntu/frontend
           SCRIPT_BEFORE: |
             sudo apt update
-            sudo apt install nginx
+            sudo apt install -y nginx
           # SCRIPT_AFTER: |
           #   whoami
           #   ls -al
