@@ -1,16 +1,19 @@
 name: Build Workflow
 
 on:
-  workflow_run:
-    workflows: [Check Workflow]
-    branches: [master]
-    types: [completed]
+  # workflow_run:
+  #   workflows: [Check Workflow]
+  #   branches: [master]
+  #   types: [completed]
+  pull_request:
+    branches:
+      - master
 
 jobs:
   run-build:
     name: Run Build
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       # - name: Download Artifact From Check Workflow
       #   uses: actions/download-artifact@v4
@@ -46,7 +49,24 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy to Amazon EC2 Instance
+        uses: easingthemes/ssh-deploy@main
         with:
-          folder: build
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SOURCE: 'build/'
+          # REMOTE_HOST: 3.80.225.156
+          REMOTE_HOST: ec2-3-80-225-156.compute-1.amazonaws.com
+          REMOTE_USER: ubuntu
+          TARGET: /home/ubuntu
+          SCRIPT_BEFORE: |
+            whoami
+            ls -al
+          SCRIPT_AFTER: |
+            whoami
+            ls -al
+            echo $RSYNC_STDOUT
+
+      # - name: Deploy 🚀
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     folder: build

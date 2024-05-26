@@ -1,12 +1,13 @@
 name: Check Workflow
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  workflow_dispatch
+  # push:
+  #   branches:
+  #     - master
+  # pull_request:
+  #   branches:
+  #     - master
 
 jobs:
   run-linters:
