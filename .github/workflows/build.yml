@@ -55,14 +55,15 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.EC2_REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.EC2_REMOTE_USER }}
-          SOURCE: 'build/'
+          SOURCE: build
           TARGET: /home/ubuntu/frontend
           # SCRIPT_BEFORE: |
           #   sudo apt update
           #   sudo apt install -y nginx
           #   sudo apt install -y nodejs
           SCRIPT_AFTER: |
-            sudo cp -R frontend/ /var/www/html/frontend/
+            sudo rm -r /var/www/html/frontend
+            sudo cp -r frontend /var/www/html/frontend
 
       # - name: Deploy 🚀
       #   uses: JamesIves/github-pages-deploy-action@v4
