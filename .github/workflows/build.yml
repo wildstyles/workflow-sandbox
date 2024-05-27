@@ -56,13 +56,13 @@ jobs:
           REMOTE_HOST: ${{ secrets.EC2_REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.EC2_REMOTE_USER }}
           SOURCE: 'build/'
-          TARGET: /var/www/html/frontend/
+          TARGET: /home/ubuntu/frontend
           # SCRIPT_BEFORE: |
           #   sudo apt update
           #   sudo apt install -y nginx
           #   sudo apt install -y nodejs
-          # SCRIPT_AFTER: |
-          #   sudo cp -R frontend/ /var/www/html/frontend/
+          SCRIPT_AFTER: |
+            sudo cp -R frontend/ /var/www/html/frontend/
 
       # - name: Deploy 🚀
       #   uses: JamesIves/github-pages-deploy-action@v4
