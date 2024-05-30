@@ -1,7 +1,6 @@
 {
   "name": "workflow-sandbox",
   "version": "0.1.0",
-  "homepage": "https://wildstyles.github.io/workflow-sandbox",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -13,7 +12,8 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
