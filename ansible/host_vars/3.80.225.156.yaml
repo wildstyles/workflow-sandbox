@@ -1,0 +1,2 @@
+global_nginx_config_dest: /etc/nginx/nginx.conf
+nginx_config_dest: /etc/nginx/conf.d/frontend.conf

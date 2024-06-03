@@ -1,0 +1,38 @@
+---
+- hosts: web_servers
+  become: true
+  tasks:
+    - name: update repository index and install nginx web server
+      tags: nginx
+      when: ansible_distribution in ['Ubuntu']
+      apt:
+        name:
+          - nginx
+        state: latest
+        update_cache: yes
+
+    - name: copy global configuration file for nginx
+      register: copy_global_nginx_config
+      copy:
+        src: nginx.conf
+        dest: '{{ global_nginx_config_dest }}'
+
+    - name: copy configuration file for nginx
+      register: copy_nginx_config
+      copy:
+        src: frontend.conf
+        dest: '{{ nginx_config_dest }}'
+
+    - name: restart nginx
+      when: copy_global_nginx_config.changed or copy_nginx_config.changed
+      service:
+        name: nginx
+        state: restarted
+# - hosts: workstations - is's also possible to install something locally/where ansible runs for preparation
+#   become: true
+#   tasks:
+#     - name: install terraform
+#       unarchive:
+#         src: https://releases.hashicorp.com/terraform/1.8.4/terraform_1.8.4_darwin_arm64.zip
+#         dest: /usr/local/bin
+#         remote_src: yes
